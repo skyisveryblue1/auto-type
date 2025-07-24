@@ -39,6 +39,8 @@
             this.miAddButton = new System.Windows.Forms.ToolStripMenuItem();
             this.miEditButton = new System.Windows.Forms.ToolStripMenuItem();
             this.miDeleteButton = new System.Windows.Forms.ToolStripMenuItem();
+            this.btnSettings = new System.Windows.Forms.Button();
+            this.btnStopAutoTyping = new System.Windows.Forms.Button();
             this.cmsGroup.SuspendLayout();
             this.cmsButton.SuspendLayout();
             this.SuspendLayout();
@@ -86,10 +88,11 @@
             // pnlButtons
             // 
             this.pnlButtons.AutoScroll = true;
+            this.pnlButtons.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.pnlButtons.ContextMenuStrip = this.cmsButton;
             this.pnlButtons.Location = new System.Drawing.Point(12, 35);
             this.pnlButtons.Name = "pnlButtons";
-            this.pnlButtons.Size = new System.Drawing.Size(478, 244);
+            this.pnlButtons.Size = new System.Drawing.Size(360, 319);
             this.pnlButtons.TabIndex = 3;
             // 
             // cmsButton
@@ -122,17 +125,43 @@
             this.miDeleteButton.Text = "Delete Button";
             this.miDeleteButton.Click += new System.EventHandler(this.miDeleteButton_Click);
             // 
+            // btnSettings
+            // 
+            this.btnSettings.Location = new System.Drawing.Point(286, 7);
+            this.btnSettings.Name = "btnSettings";
+            this.btnSettings.Size = new System.Drawing.Size(66, 23);
+            this.btnSettings.TabIndex = 4;
+            this.btnSettings.Text = "Settings...";
+            this.btnSettings.UseVisualStyleBackColor = true;
+            this.btnSettings.Click += new System.EventHandler(this.btnSettings_Click);
+            // 
+            // btnStopAutoTyping
+            // 
+            this.btnStopAutoTyping.Location = new System.Drawing.Point(182, 7);
+            this.btnStopAutoTyping.Name = "btnStopAutoTyping";
+            this.btnStopAutoTyping.Size = new System.Drawing.Size(98, 23);
+            this.btnStopAutoTyping.TabIndex = 5;
+            this.btnStopAutoTyping.Text = "Stop Auto Typing";
+            this.btnStopAutoTyping.UseVisualStyleBackColor = true;
+            this.btnStopAutoTyping.Click += new System.EventHandler(this.btnStopAutoTyping_Click);
+            // 
             // FrmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(498, 287);
+            this.ClientSize = new System.Drawing.Size(384, 361);
+            this.Controls.Add(this.btnStopAutoTyping);
+            this.Controls.Add(this.btnSettings);
             this.Controls.Add(this.pnlButtons);
             this.Controls.Add(this.cmbGroups);
             this.MaximizeBox = false;
             this.MinimizeBox = false;
+            this.MinimumSize = new System.Drawing.Size(400, 400);
             this.Name = "FrmMain";
+            this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
             this.Text = "Auto Type v1.0";
+            this.TopMost = true;
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.FrmMain_FormClosed);
             this.cmsGroup.ResumeLayout(false);
             this.cmsButton.ResumeLayout(false);
             this.ResumeLayout(false);
@@ -151,6 +180,8 @@
         private System.Windows.Forms.ToolStripMenuItem miAddButton;
         private System.Windows.Forms.ToolStripMenuItem miEditButton;
         private System.Windows.Forms.ToolStripMenuItem miDeleteButton;
+        private System.Windows.Forms.Button btnSettings;
+        private System.Windows.Forms.Button btnStopAutoTyping;
     }
 }
 
