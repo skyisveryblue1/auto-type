@@ -28,71 +28,129 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.cmbCategories = new System.Windows.Forms.ComboBox();
-            this.label1 = new System.Windows.Forms.Label();
-            this.btnManageCategory = new System.Windows.Forms.Button();
+            this.components = new System.ComponentModel.Container();
+            this.cmbGroups = new System.Windows.Forms.ComboBox();
+            this.cmsGroup = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.miAddGroup = new System.Windows.Forms.ToolStripMenuItem();
+            this.miRenameGroup = new System.Windows.Forms.ToolStripMenuItem();
+            this.miDeleteGroup = new System.Windows.Forms.ToolStripMenuItem();
             this.pnlButtons = new System.Windows.Forms.FlowLayoutPanel();
+            this.cmsButton = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.miAddButton = new System.Windows.Forms.ToolStripMenuItem();
+            this.miEditButton = new System.Windows.Forms.ToolStripMenuItem();
+            this.miDeleteButton = new System.Windows.Forms.ToolStripMenuItem();
+            this.cmsGroup.SuspendLayout();
+            this.cmsButton.SuspendLayout();
             this.SuspendLayout();
             // 
-            // cmbCategories
+            // cmbGroups
             // 
-            this.cmbCategories.FormattingEnabled = true;
-            this.cmbCategories.Location = new System.Drawing.Point(71, 6);
-            this.cmbCategories.Name = "cmbCategories";
-            this.cmbCategories.Size = new System.Drawing.Size(150, 21);
-            this.cmbCategories.TabIndex = 0;
+            this.cmbGroups.ContextMenuStrip = this.cmsGroup;
+            this.cmbGroups.FormattingEnabled = true;
+            this.cmbGroups.Location = new System.Drawing.Point(12, 8);
+            this.cmbGroups.Name = "cmbGroups";
+            this.cmbGroups.Size = new System.Drawing.Size(150, 21);
+            this.cmbGroups.TabIndex = 0;
+            this.cmbGroups.SelectedIndexChanged += new System.EventHandler(this.cmbGroups_SelectedIndexChanged);
             // 
-            // label1
+            // cmsGroup
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(12, 9);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(52, 13);
-            this.label1.TabIndex = 1;
-            this.label1.Text = "Category:";
+            this.cmsGroup.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.miAddGroup,
+            this.miRenameGroup,
+            this.miDeleteGroup});
+            this.cmsGroup.Name = "cmsGroup";
+            this.cmsGroup.Size = new System.Drawing.Size(154, 70);
             // 
-            // btnManageCategory
+            // miAddGroup
             // 
-            this.btnManageCategory.BackgroundImage = global::auto_type.Properties.Resources.category_mng;
-            this.btnManageCategory.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.btnManageCategory.Location = new System.Drawing.Point(226, 4);
-            this.btnManageCategory.Name = "btnManageCategory";
-            this.btnManageCategory.Size = new System.Drawing.Size(28, 25);
-            this.btnManageCategory.TabIndex = 2;
-            this.btnManageCategory.UseVisualStyleBackColor = true;
-            this.btnManageCategory.Click += new System.EventHandler(this.btnManageCategory_Click);
+            this.miAddGroup.Name = "miAddGroup";
+            this.miAddGroup.Size = new System.Drawing.Size(153, 22);
+            this.miAddGroup.Text = "Add Group";
+            this.miAddGroup.Click += new System.EventHandler(this.miAddGroup_Click);
+            // 
+            // miRenameGroup
+            // 
+            this.miRenameGroup.Name = "miRenameGroup";
+            this.miRenameGroup.Size = new System.Drawing.Size(153, 22);
+            this.miRenameGroup.Text = "Rename Group";
+            this.miRenameGroup.Click += new System.EventHandler(this.miRenameGroup_Click);
+            // 
+            // miDeleteGroup
+            // 
+            this.miDeleteGroup.Name = "miDeleteGroup";
+            this.miDeleteGroup.Size = new System.Drawing.Size(153, 22);
+            this.miDeleteGroup.Text = "Delete Group";
+            this.miDeleteGroup.Click += new System.EventHandler(this.miDeleteGroup_Click);
             // 
             // pnlButtons
             // 
             this.pnlButtons.AutoScroll = true;
-            this.pnlButtons.Location = new System.Drawing.Point(12, 42);
+            this.pnlButtons.ContextMenuStrip = this.cmsButton;
+            this.pnlButtons.Location = new System.Drawing.Point(12, 35);
             this.pnlButtons.Name = "pnlButtons";
-            this.pnlButtons.Size = new System.Drawing.Size(676, 383);
+            this.pnlButtons.Size = new System.Drawing.Size(478, 244);
             this.pnlButtons.TabIndex = 3;
+            // 
+            // cmsButton
+            // 
+            this.cmsButton.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.miAddButton,
+            this.miEditButton,
+            this.miDeleteButton});
+            this.cmsButton.Name = "cmsGroup";
+            this.cmsButton.Size = new System.Drawing.Size(147, 70);
+            // 
+            // miAddButton
+            // 
+            this.miAddButton.Name = "miAddButton";
+            this.miAddButton.Size = new System.Drawing.Size(146, 22);
+            this.miAddButton.Text = "Add Button";
+            this.miAddButton.Click += new System.EventHandler(this.miAddButton_Click);
+            // 
+            // miEditButton
+            // 
+            this.miEditButton.Name = "miEditButton";
+            this.miEditButton.Size = new System.Drawing.Size(146, 22);
+            this.miEditButton.Text = "Edit Button";
+            this.miEditButton.Click += new System.EventHandler(this.miEditButton_Click);
+            // 
+            // miDeleteButton
+            // 
+            this.miDeleteButton.Name = "miDeleteButton";
+            this.miDeleteButton.Size = new System.Drawing.Size(146, 22);
+            this.miDeleteButton.Text = "Delete Button";
+            this.miDeleteButton.Click += new System.EventHandler(this.miDeleteButton_Click);
             // 
             // FrmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(700, 437);
+            this.ClientSize = new System.Drawing.Size(498, 287);
             this.Controls.Add(this.pnlButtons);
-            this.Controls.Add(this.btnManageCategory);
-            this.Controls.Add(this.label1);
-            this.Controls.Add(this.cmbCategories);
+            this.Controls.Add(this.cmbGroups);
             this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.Name = "FrmMain";
             this.Text = "Auto Type v1.0";
+            this.cmsGroup.ResumeLayout(false);
+            this.cmsButton.ResumeLayout(false);
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
         #endregion
 
-        private System.Windows.Forms.ComboBox cmbCategories;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Button btnManageCategory;
+        private System.Windows.Forms.ComboBox cmbGroups;
         private System.Windows.Forms.FlowLayoutPanel pnlButtons;
+        private System.Windows.Forms.ContextMenuStrip cmsGroup;
+        private System.Windows.Forms.ToolStripMenuItem miAddGroup;
+        private System.Windows.Forms.ToolStripMenuItem miRenameGroup;
+        private System.Windows.Forms.ToolStripMenuItem miDeleteGroup;
+        private System.Windows.Forms.ContextMenuStrip cmsButton;
+        private System.Windows.Forms.ToolStripMenuItem miAddButton;
+        private System.Windows.Forms.ToolStripMenuItem miEditButton;
+        private System.Windows.Forms.ToolStripMenuItem miDeleteButton;
     }
 }
 

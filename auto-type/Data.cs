@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
@@ -13,9 +14,15 @@ namespace auto_type
     public class ButtonInfo
     {
         public string Name { get; set; }
+        public string Group { get; set; }
+        public string Hint { get; set; }
         public string TextToType { get; set; }
-        public string Category { get; set; }
+        
         public int Index { get; set; }
+
+        public Font Font { get; set; }
+        public Color TextColor { get; set; }
+        public Color BackColor { get; set; }
     }
 
     [Serializable]
@@ -24,7 +31,7 @@ namespace auto_type
         private const string dataFile = "buttons.dat";
 
         public static List<ButtonInfo> Buttons { get; set; }
-        public static List<string> Categories { get; set; }
+        public static List<string> Groups { get; set; }
 
         public static void LoadData()
         {
@@ -35,19 +42,17 @@ namespace auto_type
                     using (var stream = File.Open(dataFile, FileMode.Open))
                     {
                         var formatter = new BinaryFormatter();
-                        Categories = formatter.Deserialize(stream) as List<string>;
-                        if (!Categories.Contains("Default"))
-                            Categories.Add("Default");
+                        Groups = formatter.Deserialize(stream) as List<string>;
                         Buttons = formatter.Deserialize(stream) as List<ButtonInfo>;
                     }
                 }
                 else
                 {
-                    if (Categories == null) Categories = new List<string>();
+                    if (Groups == null) Groups = new List<string>();
                     if (Buttons == null) Buttons = new List<ButtonInfo>();
 
-                    if (!Categories.Contains("Default"))
-                        Categories.Add("Default");
+                    if (!Groups.Contains("Default"))
+                        Groups.Add("Default");
                 }
             }
             catch (Exception ex)
@@ -62,7 +67,7 @@ namespace auto_type
                 using (var stream = File.Open(dataFile, FileMode.Create))
                 {
                     var formatter = new BinaryFormatter();
-                    formatter.Serialize(stream, Categories);
+                    formatter.Serialize(stream, Groups);
                     formatter.Serialize(stream, Buttons);
                 }
             }

@@ -1,48 +1,45 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace auto_type
 {
     public partial class FrmMain : Form
     {
-        private string currentCategory = "Default";
+        public string CurGroup { get; set; }
 
         public FrmMain()
         {
             InitializeComponent();
 
             Data.LoadData();
-            UpdateCategoryComboBox();
-        }
-      
-        // Manage the categories
-        private void btnManageCategory_Click(object sender, EventArgs e)
-        {
-            FrmCategories frmCategories = new FrmCategories(this);
-            frmCategories.ShowDialog();
+            UpdateGroupComboBox();
+
+            cmsButton.Opening += ContextMenu_Button_Opening;
         }
 
-
-        internal void UpdateCategoryComboBox()
+        private void cmbGroups_SelectedIndexChanged(object sender, EventArgs e)
         {
-            cmbCategories.Items.Clear();
-            cmbCategories.Items.AddRange(Data.Categories.OrderBy(c => c).ToArray());
-            cmbCategories.SelectedItem = Data.Categories.Contains(currentCategory) ? currentCategory : "Default";
-            currentCategory = cmbCategories.SelectedItem?.ToString() ?? "Default";
+            CurGroup = cmbGroups.SelectedItem?.ToString() ?? "";
+            UpdateButtonLayout();
+        }
+
+        internal void UpdateGroupComboBox(string activeGroup = "")
+        {
+            cmbGroups.Items.Clear();
+            cmbGroups.Items.AddRange(Data.Groups.OrderBy(c => c).ToArray());
+            cmbGroups.SelectedItem = activeGroup == "" ? (String.IsNullOrEmpty(CurGroup) ? cmbGroups.Items[0] : CurGroup) : activeGroup;
+            CurGroup = cmbGroups.SelectedItem?.ToString() ?? "";
         }
 
         internal void UpdateButtonLayout()
         {
             pnlButtons.Controls.Clear();
             var sortedButtons = Data.Buttons
-                .Where(b => b.Category == currentCategory)
+                .Where(b => b.Group == CurGroup)
                 .OrderBy(b => b.Index)
                 .ThenBy(b => b.Name)
                 .ToList();
@@ -50,7 +47,7 @@ namespace auto_type
             int columns = Math.Max(1, this.ClientSize.Width / 120);
             int buttonWidth = (this.ClientSize.Width - 20) / columns - 10;
             int buttonHeight = 40;
-
+            var toolTip = new ToolTip();
             foreach (var buttonInfo in sortedButtons)
             {
                 var button = new Button
@@ -59,10 +56,13 @@ namespace auto_type
                     Tag = buttonInfo,
                     Width = buttonWidth,
                     Height = buttonHeight,
-                    //Font = buttonFont,
-                    //ForeColor = buttonTextColor
+                    ContextMenuStrip = cmsButton,
+                    Font = buttonInfo.Font,
+                    ForeColor = buttonInfo.TextColor,
+                    BackColor = buttonInfo.BackColor,
                 };
                 button.Click += TypeButton_Click;
+                toolTip.SetToolTip(button, buttonInfo.Hint);
                 pnlButtons.Controls.Add(button);
             }
         }
@@ -72,6 +72,75 @@ namespace auto_type
             var buttonInfo = (ButtonInfo)((Button)sender).Tag;
             System.Threading.Thread.Sleep(100);
             SendKeys.SendWait(buttonInfo.TextToType);
+        }
+
+        private void miAddGroup_Click(object sender, EventArgs e)
+        {
+            (new FrmAddGroup(this)).ShowDialog();
+        }
+
+        private void miRenameGroup_Click(object sender, EventArgs e)
+        {
+            (new FrmRenameGroup(this, cmbGroups.SelectedItem.ToString())).ShowDialog();
+        }
+
+        private void miDeleteGroup_Click(object sender, EventArgs e)
+        {
+            if (cmbGroups.SelectedItem != null)
+            {
+                if (cmbGroups.Items.Count < 2)
+                {
+                    MessageBox.Show(this, "You can't delete the last group.", "Notice");
+                    return;
+                }
+                var group = cmbGroups.SelectedItem.ToString();
+                if (MessageBox.Show(this, $"Are you sure you want to delete [{group}] group and its buttons?", "Confirm Delete", MessageBoxButtons.YesNo) == DialogResult.Yes)
+                {
+                    Data.Buttons.RemoveAll(b => b.Group == group);
+                    Data.Groups.Remove(group);
+                    cmbGroups.Items.Remove(cmbGroups.SelectedItem);
+                    Data.SaveData();
+                    UpdateGroupComboBox();
+                    UpdateButtonLayout();
+                }
+            }
+            else
+            {
+                MessageBox.Show(this, "Select a group to delete.", "Notice");
+            }
+        }
+
+        private Control ctrlSourceByButtonMenu;
+
+        private void ContextMenu_Button_Opening(object sender, CancelEventArgs e)
+        {
+            ContextMenuStrip menu = sender as ContextMenuStrip;
+            if (menu != null)
+                ctrlSourceByButtonMenu = menu.SourceControl;
+        }
+        private void miAddButton_Click(object sender, EventArgs e)
+        {
+            (new FrmAddEditButton(this)).ShowDialog();
+        }
+
+        private void miEditButton_Click(object sender, EventArgs e)
+        {
+            (new FrmAddEditButton(this, ctrlSourceByButtonMenu as Button)).ShowDialog();
+        }
+
+        private void miDeleteButton_Click(object sender, EventArgs e)
+        {
+            Button button = ctrlSourceByButtonMenu as Button;
+            if (button != null)
+            {
+                var buttonInfo = button.Tag as ButtonInfo;
+                if (MessageBox.Show(this, $"Are you sure you want to delete [{buttonInfo.Name}] button?", "Confirm Delete", MessageBoxButtons.YesNo) == DialogResult.Yes)
+                {
+                    Data.Buttons.RemoveAll(b => b.Index == buttonInfo.Index);
+                    Data.SaveData();
+                    UpdateButtonLayout();
+                }
+            }
         }
 
     }
