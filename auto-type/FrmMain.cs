@@ -107,11 +107,9 @@ namespace auto_type
             pnlButtons.Controls.Clear();
             if (Data.Buttons == null) return;
 
-            var sortedButtons = Data.Buttons
-                .Where(b => b.Group == CurGroup)
-                .OrderBy(b => b.Index)
-                .ThenBy(b => b.Name)
-                .ToList();
+            var sortedButtons = (miSortByOrder.Checked ? 
+                Data.Buttons.Where(b => b.Group == CurGroup).OrderBy(b => b.Index).ThenBy(b => b.Name) :
+                Data.Buttons.Where(b => b.Group == CurGroup).OrderBy(b => b.Name).ThenBy(b => b.Index)).ToList();
 
             int buttonWidth = this.ClientSize.Width - 25;
             int buttonHeight = 25;
@@ -248,6 +246,21 @@ namespace auto_type
         {
             curTextToType = "";
             miStopTyping.Enabled = false;
+        }
+
+        // Sort buttons by order they were added.
+        private void miSortByOrder_Click(object sender, EventArgs e)
+        {
+            miSortByOrder.Checked = !miSortByOrder.Checked;
+            miSortByName.Checked = !miSortByOrder.Checked;
+            UpdateButtonLayout();
+        }
+        // Sort buttons by name
+        private void miSortByName_Click(object sender, EventArgs e)
+        {
+            miSortByName.Checked = !miSortByName.Checked;
+            miSortByOrder.Checked = !miSortByName.Checked;
+            UpdateButtonLayout();
         }
 
         // Toggle form header visibility

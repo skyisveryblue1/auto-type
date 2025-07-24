@@ -46,6 +46,9 @@
             this.miToggleHeader = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.miSettings = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+            this.miSortByOrder = new System.Windows.Forms.ToolStripMenuItem();
+            this.miSortByName = new System.Windows.Forms.ToolStripMenuItem();
             this.cmsGroup.SuspendLayout();
             this.cmsButton.SuspendLayout();
             this.cmsTool.SuspendLayout();
@@ -147,35 +150,59 @@
             this.cmsTool.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.miStopTyping,
             this.miToggleHeader,
+            this.toolStripSeparator2,
+            this.miSortByOrder,
+            this.miSortByName,
             this.toolStripSeparator1,
             this.miSettings});
             this.cmsTool.Name = "cmsTool";
-            this.cmsTool.Size = new System.Drawing.Size(141, 76);
+            this.cmsTool.Size = new System.Drawing.Size(181, 148);
             // 
             // miStopTyping
             // 
             this.miStopTyping.Name = "miStopTyping";
-            this.miStopTyping.Size = new System.Drawing.Size(140, 22);
+            this.miStopTyping.Size = new System.Drawing.Size(180, 22);
             this.miStopTyping.Text = "Stop Typing";
             this.miStopTyping.Click += new System.EventHandler(this.miStopTyping_Click);
             // 
             // miToggleHeader
             // 
             this.miToggleHeader.Name = "miToggleHeader";
-            this.miToggleHeader.Size = new System.Drawing.Size(140, 22);
+            this.miToggleHeader.Size = new System.Drawing.Size(180, 22);
             this.miToggleHeader.Text = "Hide Header";
             this.miToggleHeader.Click += new System.EventHandler(this.miToggleHeader_Click);
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(137, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(177, 6);
             // 
             // miSettings
             // 
             this.miSettings.Name = "miSettings";
-            this.miSettings.Size = new System.Drawing.Size(140, 22);
+            this.miSettings.Size = new System.Drawing.Size(180, 22);
             this.miSettings.Text = "Settings...";
+            // 
+            // toolStripSeparator2
+            // 
+            this.toolStripSeparator2.Name = "toolStripSeparator2";
+            this.toolStripSeparator2.Size = new System.Drawing.Size(177, 6);
+            // 
+            // miSortByOrder
+            // 
+            this.miSortByOrder.Checked = true;
+            this.miSortByOrder.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.miSortByOrder.Name = "miSortByOrder";
+            this.miSortByOrder.Size = new System.Drawing.Size(180, 22);
+            this.miSortByOrder.Text = "Sort by Order";
+            this.miSortByOrder.Click += new System.EventHandler(this.miSortByOrder_Click);
+            // 
+            // miSortByName
+            // 
+            this.miSortByName.Name = "miSortByName";
+            this.miSortByName.Size = new System.Drawing.Size(180, 22);
+            this.miSortByName.Text = "Sort by Name";
+            this.miSortByName.Click += new System.EventHandler(this.miSortByName_Click);
             // 
             // FrmMain
             // 
@@ -221,6 +248,9 @@
         private System.Windows.Forms.ToolStripMenuItem miToggleHeader;
         private System.Windows.Forms.ToolStripMenuItem miStopTyping;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
+        private System.Windows.Forms.ToolStripMenuItem miSortByOrder;
+        private System.Windows.Forms.ToolStripMenuItem miSortByName;
     }
 }
 
