@@ -41,7 +41,8 @@ namespace auto_type
                 if (curButton != null)
                 {
                     var buttonInfo = curButton.Tag as ButtonInfo;
-                    curButton.Text = buttonInfo.Name = txtName.Text;
+                    buttonInfo.Name = txtName.Text;
+                    curButton.Text = buttonInfo.Name;
                     buttonInfo.TextToType = txtTextToType.Text;
                     buttonInfo.Hint = txtHint.Text;
                     buttonInfo.Group = cmbGroups.SelectedItem.ToString();

@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FrmAddEditButton));
             this.btnOK = new System.Windows.Forms.Button();
             this.txtName = new System.Windows.Forms.TextBox();
             this.btnCancel = new System.Windows.Forms.Button();
@@ -50,7 +51,7 @@
             this.btnOK.Location = new System.Drawing.Point(239, 253);
             this.btnOK.Name = "btnOK";
             this.btnOK.Size = new System.Drawing.Size(75, 23);
-            this.btnOK.TabIndex = 1;
+            this.btnOK.TabIndex = 9;
             this.btnOK.Text = "OK";
             this.btnOK.UseVisualStyleBackColor = true;
             this.btnOK.Click += new System.EventHandler(this.btnOK_Click);
@@ -60,7 +61,7 @@
             this.txtName.Location = new System.Drawing.Point(51, 11);
             this.txtName.Name = "txtName";
             this.txtName.Size = new System.Drawing.Size(157, 20);
-            this.txtName.TabIndex = 2;
+            this.txtName.TabIndex = 1;
             // 
             // btnCancel
             // 
@@ -68,7 +69,7 @@
             this.btnCancel.Location = new System.Drawing.Point(340, 253);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(75, 23);
-            this.btnCancel.TabIndex = 1;
+            this.btnCancel.TabIndex = 10;
             this.btnCancel.Text = "Cancel";
             this.btnCancel.UseVisualStyleBackColor = true;
             // 
@@ -86,7 +87,7 @@
             this.txtHint.Location = new System.Drawing.Point(51, 37);
             this.txtHint.Name = "txtHint";
             this.txtHint.Size = new System.Drawing.Size(367, 20);
-            this.txtHint.TabIndex = 2;
+            this.txtHint.TabIndex = 3;
             // 
             // label2
             // 
@@ -112,7 +113,7 @@
             this.cmbGroups.Location = new System.Drawing.Point(268, 11);
             this.cmbGroups.Name = "cmbGroups";
             this.cmbGroups.Size = new System.Drawing.Size(150, 21);
-            this.cmbGroups.TabIndex = 4;
+            this.cmbGroups.TabIndex = 2;
             // 
             // txtTextToType
             // 
@@ -121,7 +122,7 @@
             this.txtTextToType.Name = "txtTextToType";
             this.txtTextToType.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.txtTextToType.Size = new System.Drawing.Size(367, 105);
-            this.txtTextToType.TabIndex = 2;
+            this.txtTextToType.TabIndex = 4;
             // 
             // label4
             // 
@@ -148,7 +149,7 @@
             this.btnTextColor.Location = new System.Drawing.Point(100, 200);
             this.btnTextColor.Name = "btnTextColor";
             this.btnTextColor.Size = new System.Drawing.Size(65, 31);
-            this.btnTextColor.TabIndex = 5;
+            this.btnTextColor.TabIndex = 6;
             this.btnTextColor.Text = "Text Color";
             this.btnTextColor.UseVisualStyleBackColor = true;
             this.btnTextColor.Click += new System.EventHandler(this.btnTextColor_Click);
@@ -158,7 +159,7 @@
             this.btnBackColor.Location = new System.Drawing.Point(171, 200);
             this.btnBackColor.Name = "btnBackColor";
             this.btnBackColor.Size = new System.Drawing.Size(67, 31);
-            this.btnBackColor.TabIndex = 5;
+            this.btnBackColor.TabIndex = 7;
             this.btnBackColor.Text = "Back Color";
             this.btnBackColor.UseVisualStyleBackColor = true;
             this.btnBackColor.Click += new System.EventHandler(this.btnBackColor_Click);
@@ -168,7 +169,7 @@
             this.btnExample.Location = new System.Drawing.Point(284, 200);
             this.btnExample.Name = "btnExample";
             this.btnExample.Size = new System.Drawing.Size(131, 31);
-            this.btnExample.TabIndex = 6;
+            this.btnExample.TabIndex = 8;
             this.btnExample.Text = "Example Button";
             this.btnExample.UseVisualStyleBackColor = true;
             // 
@@ -193,6 +194,7 @@
             this.Controls.Add(this.txtName);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.btnOK);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "FrmAddEditButton";

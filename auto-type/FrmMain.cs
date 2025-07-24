@@ -11,7 +11,7 @@ namespace auto_type
     {
         public string CurGroup { get; set; }
 
-        private GlobalMouseHook mouseHook = new GlobalMouseHook();
+        private GlobalMouseHook mouseHook;
 
         private string curTextToType = "";
 
@@ -19,14 +19,21 @@ namespace auto_type
         {
             InitializeComponent();
 
+            Rectangle screen = Screen.PrimaryScreen.WorkingArea;
+            this.Location = new Point(screen.Width - this.Width, screen.Height - this.Height - 150);
+
             Data.LoadData();
             UpdateGroupComboBox();
 
             cmsButton.Opening += ContextMenu_Button_Opening;
+            miStopTyping.Enabled = false;
 
-            mouseHook.MouseClick += MouseHook_MouseClick;
+            // Mouse events for dragging
+            this.MouseDown += Form_MouseDown;
+            this.MouseMove += Form_MouseMove;
+            this.MouseUp += Form_MouseUp;
 
-            btnStopAutoTyping.Enabled = false;
+            dragRectangle = new Rectangle(0, 0, this.Width, pnlButtons.Top);
         }
 
         private void MouseHook_MouseClick(object sender, MouseEventArgs e)
@@ -59,6 +66,8 @@ namespace auto_type
                 {
                     Console.WriteLine($"Sending keys: {textToType}");
                     SendKeys.SendWait(textToType);
+                    curTextToType = "";
+                    miStopTyping.Enabled = false;
                 }
                 catch (Exception ex)
                 {
@@ -92,18 +101,19 @@ namespace auto_type
                 .ThenBy(b => b.Name)
                 .ToList();
 
-            int columns = Math.Max(1, this.ClientSize.Width / 120);
-            int buttonWidth = (this.ClientSize.Width - 20) / columns - 3;
-            int buttonHeight = 40;
+
+            int buttonWidth = this.ClientSize.Width - 25;
+            int buttonHeight = 25;
             var toolTip = new ToolTip();
             foreach (var buttonInfo in sortedButtons)
             {
                 var button = new Button
                 {
-                    Text = $"{buttonInfo.Index}: {buttonInfo.Name}",
+                    Text = buttonInfo.Name,
                     Tag = buttonInfo,
                     Width = buttonWidth,
                     Height = buttonHeight,
+                    Margin = new Padding(5, 0, 5, 0),
                     ContextMenuStrip = cmsButton,
                     Font = buttonInfo.Font,
                     ForeColor = buttonInfo.TextColor,
@@ -119,24 +129,29 @@ namespace auto_type
         {
             var buttonInfo = (ButtonInfo)((Button)sender).Tag;
             curTextToType = buttonInfo.TextToType;
-            btnStopAutoTyping.Enabled = !string.IsNullOrEmpty(curTextToType);
+            miStopTyping.Enabled = !string.IsNullOrEmpty(curTextToType);
+            if (mouseHook == null)
+            {
+                mouseHook = new GlobalMouseHook();
+                mouseHook.MouseClick += MouseHook_MouseClick;
+            }
         }
 
         private void miAddGroup_Click(object sender, EventArgs e)
         {
-            btnStopAutoTyping.PerformClick();
+            miStopTyping.PerformClick();
             (new FrmAddGroup(this)).ShowDialog();
         }
 
         private void miRenameGroup_Click(object sender, EventArgs e)
         {
-            btnStopAutoTyping.PerformClick();
+            miStopTyping.PerformClick();
             (new FrmRenameGroup(this, cmbGroups.SelectedItem.ToString())).ShowDialog();
         }
 
         private void miDeleteGroup_Click(object sender, EventArgs e)
         {
-            btnStopAutoTyping.PerformClick();
+            miStopTyping.PerformClick();
             if (cmbGroups.SelectedItem != null)
             {
                 if (cmbGroups.Items.Count < 2)
@@ -171,19 +186,19 @@ namespace auto_type
         }
         private void miAddButton_Click(object sender, EventArgs e)
         {
-            btnStopAutoTyping.PerformClick();
+            miStopTyping.PerformClick();
             (new FrmAddEditButton(this)).ShowDialog();
         }
 
         private void miEditButton_Click(object sender, EventArgs e)
         {
-            btnStopAutoTyping.PerformClick();
+            miStopTyping.PerformClick();
             (new FrmAddEditButton(this, ctrlSourceByButtonMenu as Button)).ShowDialog();
         }
 
         private void miDeleteButton_Click(object sender, EventArgs e)
         {
-            btnStopAutoTyping.PerformClick();
+            miStopTyping.PerformClick();
             Button button = ctrlSourceByButtonMenu as Button;
             if (button != null)
             {
@@ -196,14 +211,52 @@ namespace auto_type
                 }
             }
         }
-        private void btnStopAutoTyping_Click(object sender, EventArgs e)
+
+        private void btnTools_Click(object sender, EventArgs e)
+        {
+            miStopTyping.PerformClick();
+            if (cmsTool.Visible)
+                cmsTool.Close();
+            else
+                cmsTool.Show(btnTools, -cmsTool.Width + btnTools.Width, btnTools.Height);
+        }
+
+        private void miStopTyping_Click(object sender, EventArgs e)
         {
             curTextToType = "";
-            btnStopAutoTyping.Enabled = false;
+            miStopTyping.Enabled = false;
         }
-        private void btnSettings_Click(object sender, EventArgs e)
+        private void miToggleHeader_Click(object sender, EventArgs e)
         {
-            btnStopAutoTyping.PerformClick();
+            this.FormBorderStyle = miToggleHeader.Text == "Hide Header" ? FormBorderStyle.None : FormBorderStyle.SizableToolWindow;
+            miToggleHeader.Text = miToggleHeader.Text == "Hide Header" ? "Show Header" : "Hide header";
+        }
+
+        private bool isDragging;
+        private Point lastCursorPosition;
+        private Rectangle dragRectangle;
+        private void Form_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (dragRectangle.Contains(e.Location) && miToggleHeader.Text != "Hide Header")
+            {
+                isDragging = true;
+                lastCursorPosition = e.Location;
+            }
+        }
+
+        private void Form_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (isDragging)
+            {
+                this.Location = new Point(
+                    this.Location.X + (e.X - lastCursorPosition.X),
+                    this.Location.Y + (e.Y - lastCursorPosition.Y));
+            }
+        }
+
+        private void Form_MouseUp(object sender, MouseEventArgs e)
+        {
+            isDragging = false;
         }
 
         protected override void OnResize(EventArgs e)
@@ -211,7 +264,7 @@ namespace auto_type
             base.OnResize(e);
             if (pnlButtons != null)
             {
-                pnlButtons.Size = new Size(this.ClientSize.Width - 20, this.ClientSize.Height - 45);
+                pnlButtons.Size = new Size(this.ClientSize.Width - 10, this.ClientSize.Height - 45);
                 UpdateButtonLayout();
             }
         }
@@ -219,7 +272,6 @@ namespace auto_type
         private void FrmMain_FormClosed(object sender, FormClosedEventArgs e)
         {
             mouseHook?.Dispose();
-        }
-
+        }      
     }
 }
