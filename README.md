@@ -1,5 +1,4 @@
-# auto-type
-- C# Dynamic Button Typing Tool
+# C# Dynamic Button Typing Tool like TypeInIt
 Windows application that uses a .dat file to manage text strings. The application should allow users to create buttons that, when clicked, type out the text strings stored in the .dat file.
 
 # Key features
