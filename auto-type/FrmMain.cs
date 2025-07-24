@@ -9,22 +9,29 @@ namespace auto_type
 {
     public partial class FrmMain : Form
     {
+        // Property to store the current group
         public string CurGroup { get; set; }
 
+        // Global mouse hook for capturing mouse events
         private GlobalMouseHook mouseHook;
 
+        // Text to be typed when triggered
         private string curTextToType = "";
 
+        // Constructor
         public FrmMain()
         {
             InitializeComponent();
 
+            // Position form at bottom-right of primary screen
             Rectangle screen = Screen.PrimaryScreen.WorkingArea;
             this.Location = new Point(screen.Width - this.Width, screen.Height - this.Height - 150);
 
+            // Initialize data and UI components
             Data.LoadData();
             UpdateGroupComboBox();
 
+            // Set up context menu opening event
             cmsButton.Opening += ContextMenu_Button_Opening;
             miStopTyping.Enabled = false;
 
@@ -33,9 +40,11 @@ namespace auto_type
             this.MouseMove += Form_MouseMove;
             this.MouseUp += Form_MouseUp;
 
+            // Define draggable area
             dragRectangle = new Rectangle(0, 0, this.Width, pnlButtons.Top);
         }
 
+        // Handle global mouse click events
         private void MouseHook_MouseClick(object sender, MouseEventArgs e)
         {
             lock (mouseHook) // Synchronize access to CurTextToType
@@ -76,12 +85,14 @@ namespace auto_type
             }
         }
 
+        // Handle group selection change
         private void cmbGroups_SelectedIndexChanged(object sender, EventArgs e)
         {
             CurGroup = cmbGroups.SelectedItem?.ToString() ?? "";
             UpdateButtonLayout();
         }
 
+        // Update group dropdown list
         internal void UpdateGroupComboBox(string activeGroup = "")
         {
             cmbGroups.Items.Clear();
@@ -90,6 +101,7 @@ namespace auto_type
             CurGroup = cmbGroups.SelectedItem?.ToString() ?? "";
         }
 
+        // Update button panel layout
         internal void UpdateButtonLayout()
         {
             pnlButtons.Controls.Clear();
@@ -100,7 +112,6 @@ namespace auto_type
                 .OrderBy(b => b.Index)
                 .ThenBy(b => b.Name)
                 .ToList();
-
 
             int buttonWidth = this.ClientSize.Width - 25;
             int buttonHeight = 25;
@@ -125,6 +136,7 @@ namespace auto_type
             }
         }
 
+        // Handle button click to set text to type
         private void TypeButton_Click(object sender, EventArgs e)
         {
             var buttonInfo = (ButtonInfo)((Button)sender).Tag;
@@ -137,18 +149,21 @@ namespace auto_type
             }
         }
 
+        // Add a new group
         private void miAddGroup_Click(object sender, EventArgs e)
         {
             miStopTyping.PerformClick();
             (new FrmAddGroup(this)).ShowDialog();
         }
 
+        // Rename an existing group
         private void miRenameGroup_Click(object sender, EventArgs e)
         {
             miStopTyping.PerformClick();
             (new FrmRenameGroup(this, cmbGroups.SelectedItem.ToString())).ShowDialog();
         }
 
+        // Delete a group and its buttons
         private void miDeleteGroup_Click(object sender, EventArgs e)
         {
             miStopTyping.PerformClick();
@@ -176,26 +191,32 @@ namespace auto_type
             }
         }
 
+        // Store control that opened context menu
         private Control ctrlSourceByButtonMenu;
 
+        // Handle context menu opening
         private void ContextMenu_Button_Opening(object sender, CancelEventArgs e)
         {
             ContextMenuStrip menu = sender as ContextMenuStrip;
             if (menu != null)
                 ctrlSourceByButtonMenu = menu.SourceControl;
         }
+
+        // Add a new button
         private void miAddButton_Click(object sender, EventArgs e)
         {
             miStopTyping.PerformClick();
             (new FrmAddEditButton(this)).ShowDialog();
         }
 
+        // Edit an existing button
         private void miEditButton_Click(object sender, EventArgs e)
         {
             miStopTyping.PerformClick();
             (new FrmAddEditButton(this, ctrlSourceByButtonMenu as Button)).ShowDialog();
         }
 
+        // Delete a button
         private void miDeleteButton_Click(object sender, EventArgs e)
         {
             miStopTyping.PerformClick();
@@ -212,6 +233,7 @@ namespace auto_type
             }
         }
 
+        // Show/hide tools context menu
         private void btnTools_Click(object sender, EventArgs e)
         {
             miStopTyping.PerformClick();
@@ -221,20 +243,26 @@ namespace auto_type
                 cmsTool.Show(btnTools, -cmsTool.Width + btnTools.Width, btnTools.Height);
         }
 
+        // Stop typing action
         private void miStopTyping_Click(object sender, EventArgs e)
         {
             curTextToType = "";
             miStopTyping.Enabled = false;
         }
+
+        // Toggle form header visibility
         private void miToggleHeader_Click(object sender, EventArgs e)
         {
             this.FormBorderStyle = miToggleHeader.Text == "Hide Header" ? FormBorderStyle.None : FormBorderStyle.SizableToolWindow;
             miToggleHeader.Text = miToggleHeader.Text == "Hide Header" ? "Show Header" : "Hide header";
         }
 
+        // Variables for dragging functionality
         private bool isDragging;
         private Point lastCursorPosition;
         private Rectangle dragRectangle;
+
+        // Start dragging form
         private void Form_MouseDown(object sender, MouseEventArgs e)
         {
             if (dragRectangle.Contains(e.Location) && miToggleHeader.Text != "Hide Header")
@@ -244,6 +272,7 @@ namespace auto_type
             }
         }
 
+        // Update form position while dragging
         private void Form_MouseMove(object sender, MouseEventArgs e)
         {
             if (isDragging)
@@ -254,11 +283,13 @@ namespace auto_type
             }
         }
 
+        // Stop dragging form
         private void Form_MouseUp(object sender, MouseEventArgs e)
         {
             isDragging = false;
         }
 
+        // Handle form resize
         protected override void OnResize(EventArgs e)
         {
             base.OnResize(e);
@@ -269,9 +300,10 @@ namespace auto_type
             }
         }
 
+        // Clean up resources when form is closed
         private void FrmMain_FormClosed(object sender, FormClosedEventArgs e)
         {
             mouseHook?.Dispose();
-        }      
+        }
     }
 }
